@@ -127,7 +127,8 @@
             }
           ],
           "summary": "Returns All the companies"      
-      },
+      }
+    },
       "/api/company/{comp_id}": {
         "parameters": [
           {
@@ -210,4 +211,3 @@
         }
       }
     }
-}
