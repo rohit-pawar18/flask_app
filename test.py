@@ -25,6 +25,10 @@ CREATE TABLE Persons (
     City varchar(255)
 );
 
+?CompanyName=test&CompanyNumber=1&CompanyStatusId=1&CompanyCategoryId=2&DistrictId=5&BusinessActivityId=6&IncorporationDate=2022-06-06&CountryOfOriginId=8&CompanySizeId=12
+Exporter=20.0&HasPatent=1&HasGrant=0
+http://localhost:5000/users/?CompanyName=%22test%22&CompanyNumber=1&CompanyStatusId=1&CompanyCategoryId=2&DistrictId=5&BusinessActivityId=6&IncorporationDate=%272022-06-06%27&CountryOfOriginId=8&CompanySizeId=12Exporter=20.0&HasPatent=1&HasGrant=0
+
 CREATE TABLE UserInfo (
 CompanyName VARCHAR(255),
 CompanyNumber INT,

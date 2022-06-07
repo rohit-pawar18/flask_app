@@ -1,9 +1,20 @@
 from flask import Flask, jsonify, request
 from flaskext.mysql import MySQL
 from flask_restful import Resource, Api
+from flask_swagger_ui import get_swaggerui_blueprint
+#from routes import request_api
 
-import pandas as pd
-
+# sweger setup 
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Company"
+    }
+)
+#import pandas as pd
 
 #username = "banksearchbi-dash"
 username = "rohit"
@@ -19,13 +30,14 @@ database = "banksearchbi"
 
 #Create an instance of Flask
 app = Flask(__name__)
+app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+#app.register_blueprint(request_api.get_blueprint())
 
 #Create an instance of MySQL
 mysql = MySQL()
 
 #Create an instance of Flask RESTful API
 api = Api(app)
-
 #Set database credentials in config.
 app.config['MYSQL_DATABASE_USER'] = username
 app.config['MYSQL_DATABASE_PASSWORD'] = password
@@ -34,15 +46,29 @@ app.config['MYSQL_DATABASE_HOST'] = server
 
 #Initialize the MySQL extension
 mysql.init_app(app)
+conn = ''#mysql.connect()
 
-conn = mysql.connect()
-
-class UserList(Resource):
+class CompanyList(Resource):
     def get(self):
+        offset = request.args.get('offset', 10)
+        limit = request.args.get('limit', 10)
+        str = ''
+        first = True
+        for key, val in request.args.items():
+            if val and key not in ['limit','offset']:
+                if first == False:
+                    str+=" AND "
+                else:
+                    first =False
+
+                if key in ['CompanyName', 'IncorporationDate']:
+                    str+=f"{key}='{val}'"
+                else:
+                    str+=f"{key}={val}"
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-            cursor.execute("""select * from otg_demo_users""")
+            cursor.execute(f"""select * from UserInfo where {str} LIMIT {offset}, {limit};""")
             rows = cursor.fetchall()
             return jsonify(rows)
         except Exception as e:
@@ -51,25 +77,23 @@ class UserList(Resource):
             cursor.close()
             conn.close()
 
-    def post(self):
+class Company(Resource):
+    def get(self, comp_id):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-            _name = request.form['name']
-            _age = request.form['age']
-            _city = request.form['city']
-            insert_user_cmd = """INSERT INTO otg_demo_users(name, age, city) 
-                                VALUES(%s, %s, %s)"""
-            cursor.execute(insert_user_cmd, (_name, _age, _city))
-            conn.commit()
-            response = jsonify(message='User added successfully.', id=cursor.lastrowid)
-            #response.data = cursor.lastrowid
-            response.status_code = 200
+            cursor.execute('select * from UserInfo where id = %s',comp_id)
+            rows = cursor.fetchall()
+            return jsonify(rows)
         except Exception as e:
             print(e)
-            response = jsonify('Failed to add user.')         
-            response.status_code = 400 
         finally:
             cursor.close()
             conn.close()
-            return(response)
+
+
+api.add_resource(CompanyList, '/api/company/', endpoint='companies')
+api.add_resource(Company, '/api/company/<int:comp_id>/', endpoint='company')
+
+if __name__ == "__main__":
+    app.run(debug=True)

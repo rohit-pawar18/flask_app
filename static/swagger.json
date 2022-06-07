@@ -1,0 +1,213 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "company",
+      "version": "1.0.0",
+      "title": "CompanyProfiles",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "servers": [
+      {
+        "url": "/"
+      }
+    ],
+    "tags": [
+      {
+        "name": "Companies",
+        "description": ""
+      }
+    ],
+    "paths": {
+      "/api/company/": {
+        "get": {
+          "tags": [
+            "Companies List"
+          ],
+          "parameters": [
+            {
+                "name": "CompanyName",
+                "in": "query",
+                "required": false,
+                "description": "name of company",
+                "type": "string"
+            },
+            {
+                "name": "CompanyNumber",
+                "in": "query",
+                "required": false,
+                "description": "number of company",
+                "type": "int"
+            },
+            {
+                "name": "CompanyStatusId",
+                "in": "query",
+                "required": false,
+                "description": "status id of company",
+                "type": "int"
+            },{
+                "name": "CompanyCategoryId",
+                "in": "query",
+                "required": false,
+                "description": "category id of company",
+                "type": "int"
+            },
+            {
+                "name": "DistrictId",
+                "in": "query",
+                "required": false,
+                "description": "DistrictId",
+                "type": "int"
+            },
+            
+            {
+                "name": "BusinessActivityId",
+                "in": "query",
+                "required": false,
+                "description": "BusinessActivityId",
+                "type": "int"
+            },
+            {
+                "name": "IncorporationDate",
+                "in": "query",
+                "required": false,
+                "description": "IncorporationDate",
+                "type": "string"
+            },
+            {
+                "name": "CountryOfOriginId",
+                "in": "query",
+                "required": false,
+                "description": "CountryOfOriginId",
+                "type": "int"
+            },
+            {
+                "name": "CompanySizeId",
+                "in": "query",
+                "required": false,
+                "description": "CompanySizeId",
+                "type": "int"
+            },
+            {
+                "name": "Exporter",
+                "in": "query",
+                "required": false,
+                "description": "Exporter",
+                "type": "int"
+            },
+            {
+                "name": "HasPatent",
+                "in": "query",
+                "required": false,
+                "description": "HasPatent",
+                "type": "int"
+            },
+            {
+                "name": "HasGrant",
+                "in": "query",
+                "required": false,
+                "description": "HasGrant",
+                "type": "int"
+            },
+            {
+                "name": "limit",
+                "in": "query",
+                "required": false,
+                "description": "data per page",
+                "type": "int"
+            },
+            {
+                "name": "offset",
+                "in": "query",
+                "required": false,
+                "description": "page start record it",
+                "type": "int"
+            }
+          ],
+          "summary": "Returns All the companies"      
+      },
+      "/api/company/{comp_id}": {
+        "parameters": [
+          {
+            "name": "comp_id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the company that we want to match",
+            "type": "int"
+          }
+        ],
+        "get": {
+          "tags": [
+            "Get single compnay"
+          ],
+          "summary": "Get compnay with given ID",
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "400": {
+              "description": "Failed. Misunderstood Request."
+            },
+            "404": {
+              "description": "Failed. Book request not found."
+            }
+          }
+        }
+        }
+      },
+    "components": {
+        "schemas": {
+          "id": {
+            "properties": {
+              "uuid": {
+                "type": "string"
+              }
+            }
+          },
+          "bookRequestPostBody": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "format": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              }
+            }
+          },
+          "bookRequest": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "format": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "number"
+              }
+            }
+          },
+          "bookRequests": {
+            "type": "object",
+            "properties": {
+              "bookRequest": {
+                "type": "object",
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/bookRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+}
