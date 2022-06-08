@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-      "description": "company",
+      "description": "BankInfo",
       "version": "1.0.0",
       "title": "CompanyProfiles",
       "license": {
@@ -31,34 +31,34 @@
                 "name": "CompanyName",
                 "in": "query",
                 "required": false,
-                "description": "name of company",
+                "description": "name of company (String)",
                 "type": "string"
             },
             {
                 "name": "CompanyNumber",
                 "in": "query",
                 "required": false,
-                "description": "number of company",
+                "description": "number of company (Int)",
                 "type": "int"
             },
             {
                 "name": "CompanyStatusId",
                 "in": "query",
                 "required": false,
-                "description": "status id of company",
+                "description": "status id of company (Int)",
                 "type": "int"
             },{
                 "name": "CompanyCategoryId",
                 "in": "query",
                 "required": false,
-                "description": "category id of company",
+                "description": "category id of company (Int)",
                 "type": "int"
             },
             {
                 "name": "DistrictId",
                 "in": "query",
                 "required": false,
-                "description": "DistrictId",
+                "description": "DistrictId (Int)",
                 "type": "int"
             },
             
@@ -66,67 +66,78 @@
                 "name": "BusinessActivityId",
                 "in": "query",
                 "required": false,
-                "description": "BusinessActivityId",
+                "description": "BusinessActivityId (Int)",
                 "type": "int"
             },
             {
                 "name": "IncorporationDate",
                 "in": "query",
                 "required": false,
-                "description": "IncorporationDate",
+                "description": "IncorporationDate (Date YYYY-MM-DD) ",
                 "type": "string"
             },
             {
                 "name": "CountryOfOriginId",
                 "in": "query",
                 "required": false,
-                "description": "CountryOfOriginId",
+                "description": "CountryOfOriginId (Int)",
                 "type": "int"
             },
             {
                 "name": "CompanySizeId",
                 "in": "query",
                 "required": false,
-                "description": "CompanySizeId",
+                "description": "CompanySizeId (Int)",
                 "type": "int"
             },
             {
                 "name": "Exporter",
                 "in": "query",
                 "required": false,
-                "description": "Exporter",
+                "description": "Exporter (Float)",
                 "type": "int"
             },
             {
                 "name": "HasPatent",
                 "in": "query",
                 "required": false,
-                "description": "HasPatent",
+                "description": "HasPatent (True/ False)",
                 "type": "int"
             },
             {
                 "name": "HasGrant",
                 "in": "query",
                 "required": false,
-                "description": "HasGrant",
-                "type": "int"
+                "description": "HasGrant (True/ False)",
+                "type": "bool"
             },
             {
                 "name": "limit",
                 "in": "query",
                 "required": false,
-                "description": "data per page",
+                "description": "data per page (int)",
                 "type": "int"
             },
             {
                 "name": "offset",
                 "in": "query",
                 "required": false,
-                "description": "page start record it",
+                "description": "page offset (int)",
                 "type": "int"
             }
           ],
-          "summary": "Returns All the companies"      
+          "summary": "Returns All the companies" ,   
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "400": {
+              "description": "Failed. Misunderstood Request."
+            },
+            "404": {
+              "description": "Failed. Book request not found."
+            }
+          }
       }
     },
       "/api/company/{comp_id}": {
@@ -164,47 +175,6 @@
             "properties": {
               "uuid": {
                 "type": "string"
-              }
-            }
-          },
-          "bookRequestPostBody": {
-            "type": "object",
-            "properties": {
-              "title": {
-                "type": "string",
-                "format": "string"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              }
-            }
-          },
-          "bookRequest": {
-            "type": "object",
-            "properties": {
-              "title": {
-                "type": "string",
-                "format": "string"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              },
-              "timestamp": {
-                "type": "string",
-                "format": "number"
-              }
-            }
-          },
-          "bookRequests": {
-            "type": "object",
-            "properties": {
-              "bookRequest": {
-                "type": "object",
-                "additionalProperties": {
-                  "$ref": "#/components/schemas/bookRequest"
-                }
               }
             }
           }
