@@ -125,22 +125,11 @@ class BankinfoSchema(SQLAlchemySchema):
     AddressPostCodeValue = fields.String()
 
 
-
-
-# app.config['MYSQL_DATABASE_USER'] = "rohit"
-# app.config['MYSQL_DATABASE_PASSWORD'] = "Download@1"
-# app.config['MYSQL_DATABASE_DB'] = "banksearchbi"
-# app.config['MYSQL_DATABASE_HOST'] = "localhost"
-# mysql = MySQL()
-# #Initialize the MySQL extension
-# mysql.init_app(app)
-
 # API VIEWS 
-
 class CompanyList(Resource):
 
     def get(self):
-        page = int(request.args.get('offset',10))
+        page = int(request.args.get('offset',1))
         per_page = int(request.args.get('limit',200))
         if len(request.args.keys()) < 3:
             bankList = Bankinfo.query.paginate(page,per_page,error_out=False).items

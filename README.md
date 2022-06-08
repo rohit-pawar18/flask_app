@@ -1,3 +1,10 @@
 # flask_app
 
-ref https://www.opentechguides.com/how-to/article/python/210/flask-mysql-crud.html
+
+#To run the app.
+
+python app.py
+
+#to run the test cases inter pytest and enter on termainal
+
+pytest

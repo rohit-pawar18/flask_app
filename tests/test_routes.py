@@ -1,80 +1,49 @@
-from flask import Flask
-import json
+from pandas import offsets
+from get_test_app import creage_app
 
 
-def test_base_route():
-    import pdb;pdb.set_trace()
-    app = Flask(__name__)
+def test_get_company_list_found():
+    app = creage_app()
     client = app.test_client()
     url = '/api/company/'
-
     response = client.get(url)
-    assert response.get_data() == b'Hello, World!'
+    assert len(response.json['bankinfo']) != 0
     assert response.status_code == 200
 
-
-def test_base_route():
-    import pdb;pdb.set_trace()
-    app = Flask(__name__)
+def test_single_company_found():
+    app = creage_app()
     client = app.test_client()
     url = '/api/company/5/'
-
     response = client.get(url)
-    assert response.get_data() == b'Hello, World!'
+    assert response.json['bankinfo']['id'] == 5
     assert response.status_code == 200
 
 
-# def test_post_route__success():
-#     app = Flask(__name__)
-#     client = app.test_client()
-#     url = '/post/test'
-
-#     mock_request_headers = {
-#         'authorization-sha256': '123'
-#     }
-
-#     mock_request_data = {
-#         'request_id': '123',
-#         'payload': {
-#             'py': 'pi',
-#             'java': 'script'
-#         }
-#     }
-
-#     response = client.post(url, data=json.dumps(mock_request_data), headers=mock_request_headers)
-#     assert response.status_code == 200
+def test_not_single_company_found():
+    app = creage_app()
+    client = app.test_client()
+    url = '/api/company/9999/'
+    response = client.get(url)
+    assert len(response.json['bankinfo']) == 0
+    assert response.status_code == 200
 
 
-# def test_post_route__failure__unauthorized():
-#     app = Flask(__name__)
-#     client = app.test_client()
-#     url = '/post/test'
 
-#     mock_request_headers = {}
-
-#     mock_request_data = {
-#         'request_id': '123',
-#         'payload': {
-#             'py': 'pi',
-#             'java': 'script'
-#         }
-#     }
-
-#     response = client.post(url, data=json.dumps(mock_request_data), headers=mock_request_headers)
-#     assert response.status_code == 401
+# limit amd offset is mandatory parmas 
+def test_filter_api_success():
+    app = creage_app()
+    client = app.test_client()
+    url = '/api/company/?HasPatent=True&Exporter=0.0&limit=10&offset=1'
+    response = client.get(url)
+    assert len(response.json['bankinfo']) != 0
+    assert response.status_code == 200
 
 
-# def test_post_route__failure__bad_request():
-#     app = Flask(__name__)
-#     configure_routes(app)
-#     client = app.test_client()
-#     url = '/post/test'
-
-#     mock_request_headers = {
-#         'authorization-sha256': '123'
-#     }
-
-#     mock_request_data = {}
-
-#     response = client.post(url, data=json.dumps(mock_request_data), headers=mock_request_headers)
-#     assert response.status_code == 400
+def test_filter_api_failed():
+    app = creage_app()
+    client = app.test_client()
+    url = '/api/company/?HasPatent=True&Exporter=1.5&limit=10&offset=1'
+    response = client.get(url)
+    import pdb;pdb.set_trace()
+    assert len(response.json['bankinfo']) == 0
+    assert response.status_code == 200
